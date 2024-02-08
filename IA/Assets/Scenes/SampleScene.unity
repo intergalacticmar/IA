@@ -14721,6 +14721,7 @@ GameObject:
   - component: {fileID: 1942149679}
   - component: {fileID: 1942149678}
   - component: {fileID: 1942149677}
+  - component: {fileID: 1942149682}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -14740,6 +14741,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59c89d55fc42edb488b85c7d6a6913a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolAreaCenter: {fileID: 0}
+  patrolAreaSize: {x: 0, y: 0}
+  visionRange: 15
+  visionAngle: 90
 --- !u!136 &1942149678
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -14828,6 +14833,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &1942149682
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1942149676}
+  m_Enabled: 1
+  m_AgentTypeID: -1372625422
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 1
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1 &1967393334
 GameObject:
   m_ObjectHideFlags: 0

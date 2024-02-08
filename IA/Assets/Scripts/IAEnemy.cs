@@ -1,21 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class IAEnemy : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
-    {
-        Patroling,
-        Chasing
-    }
+   
 
     // Update is called once per frame
+    enum State
+    {
+        Patrolling, 
+        Chasing
+    }
+    
     State currentState;
 
     NavMeshAgent enemyAgent;
-    Transforms playersTransforms;
+    Transform playersTransform;
 
     [SerializeField] Transform patrolAreaCenter;
 
@@ -28,17 +31,22 @@ public class IAEnemy : MonoBehaviour
     void Awake()
     {
         enemyAgent = GetComponent<NavMeshAgent>();
-        playersTransform = GameObject
+        playersTransform = GameObject.FindGameObjectWithTag("Player").transform;
+    }
+
+     void Start()
+    {
+        currentState = State.Patrolling;
     }
 
     void Update()
     {
         switch(currentState)
         {
-            case State.Patrolling;
+            case State.Patrolling:
                 Patrol();
             break;
-            case State.Chasing;
+            case State.Chasing:
                 Chase();
             break;
         }
@@ -51,7 +59,7 @@ public class IAEnemy : MonoBehaviour
             currentState = State.Chasing;
         }
 
-        if(enemyAgent.remainingDistance < 0,5f)
+        if(enemyAgent.remainingDistance < 0.5f)
         {
             SetRandomPoint();
         }
@@ -63,7 +71,7 @@ public class IAEnemy : MonoBehaviour
 
         if(OnRange() == false)
         {
-            currentState = StatePatrolling;
+            currentState = State.Patrolling;
         }
     }
 
@@ -78,18 +86,18 @@ public class IAEnemy : MonoBehaviour
 
     bool OnRange()
     {
-        /*if(Vector3.Distance(transform.position, playersTransforms.position) <= visionRange)
+        /*if(Vector3.Distance(transform.position, playersTransform.position) <= visionRange)
         {
             return true;
         }
 
         return false;*/
 
-        Vector3 directionToPlayer = playersTransforms.position - transform.position;
-        float distanceToPlayer = dirextionToPlayer.magnitude;
+        Vector3 directionToPlayer = playersTransform.position - transform.position;
+        float distanceToPlayer = directionToPlayer.magnitude;
         float angleToPlayer = Vector3.Angle(transform.forward, directionToPlayer);
 
-        if(distanceToPlayer <= visionRange && angleToPlayer < visionAngle * 0,5f)
+        if(distanceToPlayer <= visionRange && angleToPlayer < visionAngle * 0.5f)
         {
             return true;
         }
@@ -100,14 +108,14 @@ public class IAEnemy : MonoBehaviour
     void OnDrawGizmos() 
     {
         Gizmos.color = Color.blue;
-        OnDrawGizmos.DrawWireCube(patrolAreaCenter.position, new Vector3(patrolAreaSize.x, 0, patrolAreaSize.y));
+        Gizmos.DrawWireCube(patrolAreaCenter.position, new Vector3(patrolAreaSize.x, 0, patrolAreaSize.y));
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, visionRange);
 
         Gizmos.color = Color.green;
-        Vector3 fovLine1 = Quaternion.AngleAxis(visionAngle * 0,5f, transform.up) * transform.forward * visionRange;
-        Vector3 fovLine2 = Quaternion.AngleAxis(-visionAngle * 0,5f, transform.up) * transform.forward * visionRange;
+        Vector3 fovLine1 = Quaternion.AngleAxis(visionAngle * 0.5f, transform.up) * transform.forward * visionRange;
+        Vector3 fovLine2 = Quaternion.AngleAxis(-visionAngle * 0.5f, transform.up) * transform.forward * visionRange;
         Gizmos.DrawLine(transform.position, transform.position + fovLine1);
         Gizmos.DrawLine(transform.position, transform.position + fovLine2);
     }
